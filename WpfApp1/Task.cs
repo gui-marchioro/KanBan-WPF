@@ -11,7 +11,14 @@ namespace WpfApp1
         public string Name { get; set; }
         public int Priority { get; set; }
         public string Description { get; set; }
-        public string State { get; set; }
+        public enum State
+        {
+            notStarted,
+            inProgress,
+            completed
+        }
+
+        public State CurrentState { get; set; }
 
         public override string ToString()
         {
@@ -23,20 +30,20 @@ namespace WpfApp1
         {
             this.Name = name;
             this.Priority = 1;
-            this.State = "Not Started";
+            this.CurrentState = State.notStarted;
         }
         public Task(string name, int priority)
         {
             this.Name = name;
             this.Priority = priority;
-            this.State = "Not Started";
+            this.CurrentState = State.notStarted;
         }
         public Task(string name, int priority, string description)
         {
             this.Name = name;
             this.Priority = priority;
             this.Description = description;
-            this.State = "Not Started";
+            this.CurrentState = State.notStarted;
         }
     }
 }

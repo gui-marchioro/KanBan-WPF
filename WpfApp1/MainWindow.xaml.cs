@@ -21,25 +21,21 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        Tasks tListNotStarted = new Tasks();
-        Tasks tListInProgress = new Tasks();
-        Tasks tListCompleted = new Tasks();
+        Project tasks = new Project();
+        public ObservableCollection<Task> TasksNotStarted { get { return tasks.ListNotStarted; } }
+        public ObservableCollection<Task> TasksInProgress { get { return tasks.ListInProgress; } }
+        public ObservableCollection<Task> TasksCompleted { get { return tasks.ListCompleted; } }
 
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = this;
         }
-
-        public ObservableCollection<Task> TListNS { get { return tListNotStarted.TaskList; } }
-        public ObservableCollection<Task> TListIP { get { return tListInProgress.TaskList; } }
-        public ObservableCollection<Task> TListC { get { return tListCompleted.TaskList; } }
-
         private void btAddTaskHandler(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(tbTask.Text) && !lbNotStarted.Items.Contains(tbTask.Text))
             {
-                tListNotStarted.TaskList.Add(new Task(tbTask.Text));
+                tasks.ListNotStarted.Add(new Task(tbTask.Text));
                 tbTask.Clear();
             }
             UnselectAll();
@@ -47,73 +43,40 @@ namespace WpfApp1
 
         private void btNotStartedHandler(object sender, RoutedEventArgs e)
         {
-            if (lbInProgress.SelectedItem != null) 
-                ChangeListBox(lbInProgress, lbNotStarted);
-            else if (lbCompleted.SelectedItem != null) 
-                ChangeListBox(lbCompleted, lbNotStarted);
+            if (lbInProgress.SelectedItem != null)
+            {
+                tasks.ChangeTaskState((Task)lbInProgress.SelectedItem, Task.State.notStarted);
+            }
+            else if (lbCompleted.SelectedItem != null)
+            {
+                tasks.ChangeTaskState((Task)lbCompleted.SelectedItem, Task.State.notStarted);
+            }
         }
 
         private void btInProgressHandler(object sender, RoutedEventArgs e)
         {
-            if (lbNotStarted.SelectedItem != null) 
-                ChangeListBox(lbNotStarted, lbInProgress);
-            else if (lbCompleted.SelectedItem != null) 
-                ChangeListBox(lbCompleted, lbInProgress);
+            if (lbNotStarted.SelectedItem != null)
+            {
+                tasks.ChangeTaskState((Task)lbNotStarted.SelectedItem, Task.State.inProgress);
+            }
+            else if (lbCompleted.SelectedItem != null)
+            {
+                tasks.ChangeTaskState((Task)lbCompleted.SelectedItem, Task.State.inProgress);
+            }
         }
 
         private void btCompletedHandler(object sender, RoutedEventArgs e)
         {
-            if (lbNotStarted.SelectedItem != null) 
-                ChangeListBox(lbNotStarted, lbCompleted);
-            else if (lbInProgress.SelectedItem != null) 
-                ChangeListBox(lbInProgress, lbCompleted);
-        }
-        void ChangeListBox(ListBox sender, ListBox receiver)
-        {
-            int index = sender.SelectedIndex;
-            //System.Windows.MessageBox.Show("{0}", index.ToString()); //DEBUG
-            if (receiver.Name == "lbNotStarted")
+            if (lbNotStarted.SelectedItem != null)
             {
-                if (sender.Name == "lbInProgress")
-                {
-                    tListNotStarted.TaskList.Add(tListInProgress.TaskList.ElementAt<Task>(index));
-                    tListInProgress.TaskList.Remove(tListInProgress.TaskList.ElementAt<Task>(index));
-                }
-                else if (sender.Name == "lbCompleted")
-                {
-                    tListNotStarted.TaskList.Add(tListCompleted.TaskList.ElementAt<Task>(index));
-                    tListCompleted.TaskList.Remove(tListCompleted.TaskList.ElementAt<Task>(index));
-                }
+                tasks.ChangeTaskState((Task)lbNotStarted.SelectedItem, Task.State.completed);
             }
-            else if (receiver.Name == "lbInProgress")
-            {               
-                if (sender.Name == "lbNotStarted")
-                {
-                    tListInProgress.TaskList.Add(tListNotStarted.TaskList.ElementAt<Task>(index));
-                    tListNotStarted.TaskList.Remove(tListNotStarted.TaskList.ElementAt<Task>(index));
-                }
-                else if (sender.Name == "lbCompleted")
-                {
-                    tListInProgress.TaskList.Add(tListCompleted.TaskList.ElementAt<Task>(index));
-                    tListCompleted.TaskList.Remove(tListCompleted.TaskList.ElementAt<Task>(index));
-                }
-            }
-            else if (receiver.Name == "lbCompleted")
+            else if (lbInProgress.SelectedItem != null)
             {
-                if (sender.Name == "lbNotStarted")
-                {
-                    tListCompleted.TaskList.Add(tListNotStarted.TaskList.ElementAt<Task>(index));
-                    tListNotStarted.TaskList.Remove(tListNotStarted.TaskList.ElementAt<Task>(index));
-                }
-                else if (sender.Name == "lbInProgress")
-                {
-                    tListCompleted.TaskList.Add(tListInProgress.TaskList.ElementAt<Task>(index));
-                    tListInProgress.TaskList.Remove(tListInProgress.TaskList.ElementAt<Task>(index));
-                }
+                tasks.ChangeTaskState((Task)lbInProgress.SelectedItem, Task.State.completed);
             }
-            UnselectAll();
         }
-
+        
         void UnselectAll()
         {
             lbNotStarted.SelectedIndex = -1;
@@ -123,9 +86,18 @@ namespace WpfApp1
 
         private void btRemoveTaskHandler(object sender, RoutedEventArgs e)
         {
-            if (lbNotStarted.SelectedItem != null) lbNotStarted.Items.Remove(lbNotStarted.SelectedItem);
-            else if (lbInProgress.SelectedItem != null) lbInProgress.Items.Remove(lbInProgress.SelectedItem);
-            else if (lbCompleted.SelectedItem != null) lbCompleted.Items.Remove(lbCompleted.SelectedItem);
+            if (lbNotStarted.SelectedItem != null)
+            {
+                tasks.ListNotStarted.Remove((Task)lbNotStarted.SelectedItem);
+            }
+            else if (lbInProgress.SelectedItem != null)
+            {
+                tasks.ListInProgress.Remove((Task)lbInProgress.SelectedItem);
+            }
+            else if (lbCompleted.SelectedItem != null)
+            {
+                tasks.ListCompleted.Remove((Task)lbCompleted.SelectedItem);
+            }
         }
 
         private void lbNotStartedUnselect(object sender, DependencyPropertyChangedEventArgs e)

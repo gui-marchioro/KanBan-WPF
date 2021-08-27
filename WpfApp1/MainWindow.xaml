@@ -56,16 +56,16 @@
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
             <ListBox Name="lbNotStarted" Width="200" Margin="20" Background="LightSalmon" 
                      IsMouseCapturedChanged="lbNotStartedUnselect"
-                     ItemsSource="{Binding TListNS}">
+                     ItemsSource="{Binding TasksNotStarted}">
             </ListBox>
             <ListBox Name="lbInProgress" Width="200" Margin="20" Background="LightYellow" 
                      IsMouseCapturedChanged="lbInProgressUnselect"
-                     ItemsSource="{Binding TListIP}">
+                     ItemsSource="{Binding TasksInProgress}">
 
             </ListBox>
             <ListBox Name="lbCompleted" Width="200" Margin="20" Background="LightGreen" 
                      IsMouseCapturedChanged="lbCompletedUnselect"
-                     ItemsSource="{Binding TListC}">
+                     ItemsSource="{Binding TasksCompleted}">
 
             </ListBox>
         </StackPanel>

@@ -20,3 +20,4 @@ C:\Users\Guilherme Marchioro\source\repos\WpfApp1\WpfApp1\obj\Debug\net5.0-windo
 C:\Users\Guilherme Marchioro\source\repos\WpfApp1\WpfApp1\obj\Debug\net5.0-windows\ref\WpfApp1.dll
 C:\Users\Guilherme Marchioro\source\repos\WpfApp1\WpfApp1\obj\Debug\net5.0-windows\WpfApp1.pdb
 C:\Users\Guilherme Marchioro\source\repos\WpfApp1\WpfApp1\obj\Debug\net5.0-windows\WpfApp1.genruntimeconfig.cache
+C:\Users\Guilherme Marchioro\source\repos\WpfApp1\WpfApp1\obj\Debug\net5.0-windows\GeneratedInternalTypeHelper.g.cs
